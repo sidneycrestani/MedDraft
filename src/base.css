@@ -51,3 +51,26 @@ body {
 ::-webkit-scrollbar-track { background: var(--sb-track); }
 ::-webkit-scrollbar-thumb { background: var(--sb-thumb); border-radius: 4px; }
 
+/* --- CORREÇÃO DO MODO VIM --- */
+
+/* 
+   O plugin do Vim usa 3 classes (.ͼo .cm-vimMode .cm-line) + !important para esconder a seleção.
+   Nós usamos ID (#editor) + Classes para ganhar a guerra de especificidade.
+   
+   Isso força o navegador a pintar a seleção nativa (azul/cinza) mesmo estando no modo Vim.
+*/
+#editor .cm-editor .cm-vimMode .cm-line ::selection,
+#editor .cm-editor .cm-vimMode .cm-line::selection {
+  background-color: var(--selection-native) !important;
+  color: inherit !important;
+}
+
+/* 
+   Garanta também que o cursor do Vim (o bloco) tenha cor correta no modo visual 
+   (Opcional, mas ajuda na visibilidade)
+*/
+.cm-vimMode.cm-focused .cm-fat-cursor {
+  background-color: var(--primary) !important;
+  color: var(--primary-fg) !important;
+  opacity: 0.5;
+}

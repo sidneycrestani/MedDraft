@@ -9,7 +9,7 @@ const baseThemeStyles = {
     fontSize: "20px",
     lineHeight: "1.6"
   },
-    "& ::selection": {
+  "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection": {
       backgroundColor: "var(--selection-bg) !important"
   },
   ".cm-content": {
@@ -216,7 +216,7 @@ export const medicalLightTheme = EditorView.theme({
   ".cm-linenumber": { color: "var(--text-muted)" },
   ".cm-activeLineGutter": { backgroundColor: "var(--bg-gutter)" },
   ".cm-cursor": { borderLeftColor: "var(--primary)", borderLeftWidth: "2px" },
-  ".cm-selectionBackground": { backgroundColor: "var(--selection-bg) !important" },
+  // ".cm-selectionBackground": { backgroundColor: "var(--selection-bg)" },
   ".cm-matchingBracket": { backgroundColor: "var(--match-bg)", border: "none" },
   ".cm-link": { color: "var(--primary)", textDecoration: "underline" },
   ".cm-comment": { color: "var(--text-muted)", fontStyle: "italic" }
