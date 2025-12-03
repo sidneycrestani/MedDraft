@@ -1,5 +1,5 @@
 import { EditorState, Compartment } from "@codemirror/state";
-import { EditorView, keymap } from "@codemirror/view";
+import { EditorView, keymap, placeholder } from "@codemirror/view";
 import { defaultKeymap, history, historyKeymap, indentWithTab, undo, redo } from "@codemirror/commands";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { snippet, autocompletion } from "@codemirror/autocomplete";
@@ -51,6 +51,9 @@ export class EditorManager extends EventTarget {
       }
     }),
       codeFolding(),
+
+      placeholder("Comece a digitar ou use 'soap' + enter..."),
+
       markdown({ base: markdownLanguage }),
       EditorView.lineWrapping,
       autocompletion({ override: [this.snippetManager ? this.snippetManager.completionSource.bind(this.snippetManager) : () => null] }),
@@ -71,6 +74,8 @@ export class EditorManager extends EventTarget {
         if (tr.selection) this.onSelectionChange();
       }
     });
+    this.view.focus();
+
   }
 
   onDocChange() {

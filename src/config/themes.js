@@ -58,6 +58,11 @@ const baseThemeStyles = {
     color: "var(--text-muted)"
   },
 
+  ".cm-placeholder": {
+    color: "var(--text-muted)", // Usa a cor cinza definida no CSS
+    fontStyle: "italic",
+    opacity: "0.6"
+  },
   // Estado: Hover
   ".gutter-fold-icon:hover": {
     opacity: "1",
