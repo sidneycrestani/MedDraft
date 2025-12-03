@@ -9,6 +9,9 @@ const baseThemeStyles = {
     fontSize: "20px",
     lineHeight: "1.6"
   },
+    "& ::selection": {
+      backgroundColor: "var(--selection-bg) !important"
+  },
   ".cm-content": {
     padding: "18px 08px",
     fontFamily: "'Crimson Pro', serif"
@@ -90,7 +93,104 @@ const baseThemeStyles = {
 
   // Limpezas extras
   ".cm-activeLineGutter": { backgroundColor: "transparent" },
-  ".cm-line": { paddingLeft: "0", paddingRight: "8px" }
+  ".cm-line": { paddingLeft: "0", paddingRight: "8px" },
+
+  // --- Caixa Principal (Tooltip) ---
+  ".cm-tooltip.cm-tooltip-autocomplete": {
+    border: "1px solid var(--border)",
+    backgroundColor: "var(--bg-surface)",
+    borderRadius: "6px",
+    boxShadow: "var(--shadow-lg)",
+    padding: "0",
+    overflow: "hidden",
+    minWidth: "250px" // Um pouco mais largo para caber descrições médicas
+  },
+
+  // --- Lista de Itens ---
+  ".cm-tooltip.cm-tooltip-autocomplete > ul": {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: "13px",
+    maxHeight: "250px"
+  },
+
+  // --- Item Individual ---
+  ".cm-tooltip.cm-tooltip-autocomplete > ul > li": {
+    padding: "8px 12px",
+    display: "flex",
+    alignItems: "center",
+    gap: "10px", // Espaço entre ícone e texto
+    borderBottom: "1px solid var(--bg-gutter)" // Divisor sutil entre itens
+  },
+
+  // --- Item Selecionado (Destaque) ---
+  ".cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected]": {
+    backgroundColor: "var(--btn-active-bg)", // Azul bem clarinho (ou escuro no dark)
+    color: "var(--text-main)"
+  },
+
+  // --- Ícone Médico Personalizado ---
+  // O CodeMirror cria uma classe .cm-completionIcon-{type}
+  ".cm-completionIcon": {
+    width: "16px",
+    height: "16px",
+    backgroundColor: "var(--primary)", // A cor do ícone (Azul)
+    
+    // Usamos mask para desenhar uma Cruz Médica (+) usando SVG inline
+    "-webkit-mask-image": "url('data:image/svg+xml;utf8,<svg viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z\"/></svg>')",
+    "mask-image": "url('data:image/svg+xml;utf8,<svg viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z\"/></svg>')",
+    "-webkit-mask-repeat": "no-repeat",
+    "mask-repeat": "no-repeat",
+    "-webkit-mask-position": "center",
+    "mask-position": "center",
+    
+    opacity: "0.8",
+    marginRight: "0" // Reset de margem padrão
+  },
+  
+  // --- Texto "Gatilho" (ex: soap) ---
+  ".cm-completionLabel": {
+    fontWeight: "600",
+    color: "var(--primary)"
+  },
+
+  // --- Texto Coincidente (ex: o "so" de soap) ---
+  ".cm-completionMatchedText": {
+    textDecoration: "underline",
+    textDecorationColor: "var(--primary)"
+  },
+
+  // --- Detalhe (Nome do Snippet - ex: "Evolução Padrão") ---
+  ".cm-completionDetail": {
+    marginLeft: "auto",
+    fontSize: "0.85em",
+    color: "var(--text-muted)",
+    fontStyle: "normal"
+  },
+  
+  // Detalhe quando selecionado
+  ".cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected] .cm-completionDetail": {
+    color: "var(--text-main)",
+    opacity: "0.7"
+  },
+    ".cm-snippetField": {
+    backgroundColor: "var(--bg-gutter)", // Fundo sutil (cinza claro/escuro)
+    color: "var(--primary)",             // Texto em destaque (azul)
+    border: "1px dashed var(--border)",  // Borda tracejada = "preencha aqui"
+    borderRadius: "4px",
+    padding: "0 4px",                    // Espaço interno para não grudar
+    margin: "0 2px",                     // Separação do texto ao redor
+    fontWeight: "500",
+    fontSize: "0.95em",                  // Levemente menor para elegância
+    
+    // Transição suave se o usuário passar o mouse ou focar
+    transition: "all 0.2s ease"
+  },
+
+  // Efeito ao passar o mouse sobre um campo (opcional)
+  ".cm-snippetField:hover": {
+    borderColor: "var(--primary)",
+    cursor: "text"
+  }
 };
 
 export const medicalLightTheme = EditorView.theme({
@@ -116,7 +216,7 @@ export const medicalLightTheme = EditorView.theme({
   ".cm-linenumber": { color: "var(--text-muted)" },
   ".cm-activeLineGutter": { backgroundColor: "var(--bg-gutter)" },
   ".cm-cursor": { borderLeftColor: "var(--primary)", borderLeftWidth: "2px" },
-  ".cm-selectionBackground": { backgroundColor: "var(--selection-bg)" },
+  ".cm-selectionBackground": { backgroundColor: "var(--selection-bg) !important" },
   ".cm-matchingBracket": { backgroundColor: "var(--match-bg)", border: "none" },
   ".cm-link": { color: "var(--primary)", textDecoration: "underline" },
   ".cm-comment": { color: "var(--text-muted)", fontStyle: "italic" }

@@ -19,6 +19,9 @@
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
   --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  --selection-bg: #bae6fd; 
+  /* Uma cor para quando você seleciona texto fora do editor (inputs) */
+  --selection-native: #bae6fd;
 }
 body.dark-mode {
   --bg-app: #0f172a;
@@ -35,6 +38,8 @@ body.dark-mode {
   --btn-active-fg: #93c5fd;
   --sb-track: #1e293b;
   --sb-thumb: #475569;
+  --selection-bg: rgba(56, 189, 248, 0.25);
+  --selection-native: rgba(56, 189, 248, 0.4);
 }
 * { box-sizing: border-box; }
 body {
