@@ -1,10 +1,10 @@
 import { EditorState, Compartment } from "@codemirror/state";
-import { EditorView, keymap, placeholder } from "@codemirror/view";
+import { EditorView, keymap, placeholder, drawSelection } from "@codemirror/view";
 import { defaultKeymap, history, historyKeymap, indentWithTab, undo, redo } from "@codemirror/commands";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { snippet, autocompletion } from "@codemirror/autocomplete";
 import { vim } from "@replit/codemirror-vim";
-import { syntaxHighlighting, foldGutter, codeFolding, foldKeymap} from "@codemirror/language";
+import { syntaxHighlighting, foldGutter, codeFolding, foldKeymap } from "@codemirror/language";
 import { medicalLightTheme, medicalDarkTheme, HighlightStyles } from "../config/themes";
 
 export class EditorManager extends EventTarget {
@@ -13,50 +13,51 @@ export class EditorManager extends EventTarget {
     this.storageKey = storageKey;
     this.view = null;
     this.snippetManager = snippetManager;
+    
+    // Compartments para reconfiguração dinâmica
     this.themeConfig = new Compartment();
     this.vimConfig = new Compartment();
     this.keymapConfig = new Compartment();
     this.highlightCompartment = new Compartment();
+
+    // Controle de Debounce
+    this.saveTimeout = null;
   }
 
   mount(parent) {
-    const savedContent = localStorage.getItem(this.storageKey) || "";
-    const useVim = localStorage.getItem("med_editor_vim") === "true";
-    const isDark = localStorage.getItem("med_editor_theme") === "dark";
+    // 1. Sanitização: Try/Catch no localStorage para evitar crash em modo anônimo
+    let savedContent = "";
+    let useVim = false;
+    let isDark = false;
+
+    try {
+      savedContent = localStorage.getItem(this.storageKey) || "";
+      useVim = localStorage.getItem("med_editor_vim") === "true";
+      isDark = localStorage.getItem("med_editor_theme") === "dark";
+    } catch (e) {
+      console.warn("Erro ao acessar localStorage:", e);
+    }
 
     const baseExtensions = [
       this.keymapConfig.of(keymap.of([indentWithTab, ...defaultKeymap, ...historyKeymap, ...foldKeymap])),
       history(),
-      // highlightActiveLineGutter(),
-    foldGutter({
-      markerDOM: (open) => {
-        const span = document.createElement("span");
-        span.className = `gutter-fold-icon ${open ? "open" : "closed"}`;
-
-        const svgNS = "http://www.w3.org/2000/svg";
-        const svg = document.createElementNS(svgNS, "svg");
-        svg.setAttribute("viewBox", "0 0 24 24");
-        svg.setAttribute("fill", "none");
-        svg.setAttribute("stroke", "currentColor");
-        svg.setAttribute("stroke-width", "2");
-        svg.setAttribute("stroke-linecap", "round");
-        svg.setAttribute("stroke-linejoin", "round");
-
-        const polyline = document.createElementNS(svgNS, "polyline");
-        polyline.setAttribute("points", "6 9 12 15 18 9");
-        svg.appendChild(polyline);
-
-        span.appendChild(svg);
-        return span;
-      }
-    }),
+      drawSelection(),
+      foldGutter({
+        markerDOM: (open) => {
+          // Otimização: Criação de DOM segura (já estava bom, mantido)
+          const span = document.createElement("span");
+          span.className = `gutter-fold-icon ${open ? "open" : "closed"}`;
+          
+          // SVG inline simplificado para leitura
+          span.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+          return span;
+        }
+      }),
       codeFolding(),
-
       placeholder("Comece a digitar ou use 'soap' + enter..."),
-
       markdown({ base: markdownLanguage }),
       EditorView.lineWrapping,
-      autocompletion({ override: [this.snippetManager ? this.snippetManager.completionSource.bind(this.snippetManager) : () => null] }),
+      autocompletion({ override: [this.snippetManager ? this.snippetManager.completionSource.bind(this.snippetManager) : null].filter(Boolean) }),
       this.highlightCompartment.of(syntaxHighlighting(isDark ? HighlightStyles.dark : HighlightStyles.light)),
       this.vimConfig.of(useVim ? vim() : [])
     ];
@@ -69,20 +70,36 @@ export class EditorManager extends EventTarget {
       state,
       parent,
       dispatch: (tr) => {
+        // Verifica se a view ainda existe antes de atualizar
+        if (!this.view) return; 
+        
         this.view.update([tr]);
         if (tr.docChanged) this.onDocChange();
         if (tr.selection) this.onSelectionChange();
       }
     });
-    this.view.focus();
 
+    this.view.focus();
   }
 
   onDocChange() {
     const val = this.view.state.doc.toString();
-    localStorage.setItem(this.storageKey, val);
+    
+    // Dispara evento imediato para UI
     const ev = new CustomEvent("doc-change", { detail: { content: val, length: val.length } });
     this.dispatchEvent(ev);
+
+    // 2. Sanitização: Debounce para salvar no localStorage (Performance)
+    // Evita IO disk thrashing a cada caractere
+    if (this.saveTimeout) clearTimeout(this.saveTimeout);
+    
+    this.saveTimeout = setTimeout(() => {
+      try {
+        localStorage.setItem(this.storageKey, val);
+      } catch (e) {
+        console.warn("Falha ao salvar no localStorage", e);
+      }
+    }, 1000); // Salva apenas após 1 segundo de inatividade
   }
 
   onSelectionChange() {
@@ -106,37 +123,50 @@ export class EditorManager extends EventTarget {
   insertSnippet(content) {
     if (!this.view) return;
     const pos = this.view.state.selection.main.head;
-    this.view.dispatch({ changes: { from: this.view.state.selection.main.from, to: this.view.state.selection.main.to, insert: "" } });
+    // Otimização: Remove seleção antes de inserir para evitar comportamentos estranhos
+    const transaction = {
+        changes: { from: this.view.state.selection.main.from, to: this.view.state.selection.main.to, insert: "" }
+    };
+    this.view.dispatch(transaction);
+
     try {
       const fn = snippet(content);
       fn(this.view, { label: "snippet" }, pos, pos);
     } catch (_) {
+      // Fallback seguro
       this.view.dispatch({ changes: { from: pos, insert: content } });
     }
     this.view.focus();
   }
 
   insertDate() {
+    if (!this.view) return;
     const now = new Date();
     const str = now.toLocaleDateString("pt-BR") + " " + now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) + " - ";
-    const pos = this.view.state.selection.main.head;
-    this.view.dispatch({ changes: { from: pos, to: pos, insert: str } });
+    const range = this.view.state.selection.main;
+    this.view.dispatch({ changes: { from: range.from, to: range.to, insert: str } });
     this.view.focus();
   }
 
   toggleCase() {
+    if (!this.view) return;
     const sel = this.view.state.selection.main;
     if (sel.empty) return;
+    
     const text = this.view.state.doc.sliceString(sel.from, sel.to);
     let newText;
-    if (text === text.toLowerCase()) newText = text.replace(/\b\w/g, l => l.toUpperCase());
-    else if (text === text.toUpperCase()) newText = text.toLowerCase();
+    
+    // Lógica simplificada e mais robusta
+    if (text === text.toUpperCase()) newText = text.toLowerCase();
+    else if (text === text.toLowerCase()) newText = text.replace(/\b\w/g, l => l.toUpperCase()); // Title Case
     else newText = text.toUpperCase();
+
     this.view.dispatch({ changes: { from: sel.from, to: sel.to, insert: newText } });
     this.view.focus();
   }
 
   clear() {
+    if (!this.view) return;
     this.view.dispatch({ changes: { from: 0, to: this.view.state.doc.length, insert: "" } });
     this.view.focus();
   }
@@ -157,5 +187,13 @@ export class EditorManager extends EventTarget {
 
   undo() { if (this.view) { undo(this.view); this.view.focus(); } }
   redo() { if (this.view) { redo(this.view); this.view.focus(); } }
-}
 
+  // 3. Sanitização: Método vital para limpeza de memória
+  destroy() {
+    if (this.saveTimeout) clearTimeout(this.saveTimeout);
+    if (this.view) {
+      this.view.destroy();
+      this.view = null;
+    }
+  }
+}
