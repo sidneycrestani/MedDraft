@@ -14,18 +14,15 @@ export class EditorManager extends EventTarget {
     this.snippetManager = snippetManager;
     this.vimExtension = null;
     
-    // Compartments para reconfiguração dinâmica
     this.themeConfig = new Compartment();
     this.vimConfig = new Compartment();
     this.keymapConfig = new Compartment();
     this.highlightCompartment = new Compartment();
 
-    // Controle de Debounce
     this.saveTimeout = null;
   }
 
   mount(parent) {
-    // 1. Sanitização: Try/Catch no localStorage para evitar crash em modo anônimo
     let savedContent = "";
     let useVim = false;
     let isDark = false;
@@ -49,11 +46,9 @@ export class EditorManager extends EventTarget {
       drawSelection(),
       foldGutter({
         markerDOM: (open) => {
-          // Otimização: Criação de DOM segura (já estava bom, mantido)
           const span = document.createElement("span");
           span.className = `gutter-fold-icon ${open ? "open" : "closed"}`;
           
-          // SVG inline simplificado para leitura
           span.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
           return span;
         }
@@ -75,7 +70,6 @@ export class EditorManager extends EventTarget {
       state,
       parent,
       dispatch: (tr) => {
-        // Verifica se a view ainda existe antes de atualizar
         if (!this.view) return; 
         
         this.view.update([tr]);
@@ -146,7 +140,6 @@ export class EditorManager extends EventTarget {
   insertSnippet(content) {
     if (!this.view) return;
     const pos = this.view.state.selection.main.head;
-    // Otimização: Remove seleção antes de inserir para evitar comportamentos estranhos
     const transaction = {
         changes: { from: this.view.state.selection.main.from, to: this.view.state.selection.main.to, insert: "" }
     };
@@ -156,7 +149,6 @@ export class EditorManager extends EventTarget {
       const fn = snippet(content);
       fn(this.view, { label: "snippet" }, pos, pos);
     } catch (_) {
-      // Fallback seguro
       this.view.dispatch({ changes: { from: pos, insert: content } });
     }
     this.view.focus();
@@ -171,20 +163,41 @@ export class EditorManager extends EventTarget {
     this.view.focus();
   }
 
-  toggleCase() {
+toggleCase() {
     if (!this.view) return;
     const sel = this.view.state.selection.main;
-    if (sel.empty) return;
     
-    const text = this.view.state.doc.sliceString(sel.from, sel.to);
+    let from = sel.from;
+    let to = sel.to;
+
+    if (sel.empty) {
+        from = 0;
+        to = this.view.state.doc.length;
+    }
+
+    if (from === to) return;
+
+    const text = this.view.state.doc.sliceString(from, to);
     let newText;
     
-    // Lógica simplificada e mais robusta
-    if (text === text.toUpperCase()) newText = text.toLowerCase();
-    else if (text === text.toLowerCase()) newText = text.replace(/\b\w/g, l => l.toUpperCase()); // Title Case
-    else newText = text.toUpperCase();
+    const isUpperCase = text === text.toUpperCase() && text !== text.toLowerCase();
+    const isLowerCase = text === text.toLowerCase();
 
-    this.view.dispatch({ changes: { from: sel.from, to: sel.to, insert: newText } });
+    if (isUpperCase) {
+        newText = text.toLowerCase();
+    } 
+    else if (isLowerCase) {
+        newText = text.replace(/(^|[^\p{L}])\p{L}/gu, (match) => match.toUpperCase());
+    } 
+    else {
+        newText = text.toUpperCase();
+    }
+
+    this.view.dispatch({ 
+        changes: { from: from, to: to, insert: newText },
+        selection: !sel.empty ? { anchor: from, head: from + newText.length } : undefined
+    });
+    
     this.view.focus();
   }
 
@@ -211,7 +224,6 @@ export class EditorManager extends EventTarget {
   undo() { if (this.view) { undo(this.view); this.view.focus(); } }
   redo() { if (this.view) { redo(this.view); this.view.focus(); } }
 
-  // 3. Sanitização: Método vital para limpeza de memória
   destroy() {
     if (this.saveTimeout) clearTimeout(this.saveTimeout);
     if (this.view) {

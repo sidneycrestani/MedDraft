@@ -2,31 +2,28 @@ import { EditorView } from "@codemirror/view";
 import { HighlightStyle } from "@codemirror/language";
 import { tags as t } from "@lezer/highlight";
 
-// --- 1. Base Theme (Layout & Estrutura) ---
 const baseThemeStyles = {
   "&": {
     height: "100%",
     fontFamily: "'Crimson Pro', serif",
     fontSize: "20px",
     lineHeight: "1.6",
-    backgroundColor: "var(--bg-surface)", // Movido para base (usa var)
-    color: "var(--text-main)"             // Movido para base (usa var)
+    backgroundColor: "var(--bg-surface)",
+    color: "var(--text-main)"
   },
   
-  // Seleção e Foco
   "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection": {
       backgroundColor: "var(--selection-bg) !important"
   },
   ".cm-content": {
-    padding: "18px 8px", // Corrigido de 08px para 8px
+    padding: "18px 8px",
     fontFamily: "'Crimson Pro', serif",
-    caretColor: "var(--primary)" // Movido para base
+    caretColor: "var(--primary)"
   },
   
-  // Cursor
   ".cm-cursor": { 
     borderLeftWidth: "2px",
-    borderLeftColor: "var(--primary)" // Movido para base
+    borderLeftColor: "var(--primary)"
   },
   "&.cm-focused .cm-fat-cursor": {
     backgroundColor: "var(--primary)",
@@ -38,21 +35,20 @@ const baseThemeStyles = {
     backgroundColor: "transparent"
   },
 
-  // Linhas e Gutters (Mesclados e limpos)
   ".cm-line": { 
     paddingLeft: "0", 
     paddingRight: "8px" 
   },
   ".cm-activeLineGutter": { 
-    backgroundColor: "transparent" // Movido para base
+    backgroundColor: "transparent"
   },
   ".cm-gutters": { 
     padding: "0 8px",
-    backgroundColor: "transparent", // Padrão transparente, sobrescreva se necessário
+    backgroundColor: "transparent",
     border: "none",
     color: "var(--text-muted)",
     minWidth: "14px",
-    alignItems: "center" // Centralização padrão
+    alignItems: "center"
   },
   ".cm-gutterElement": {
     backgroundColor: "transparent",
@@ -69,7 +65,6 @@ const baseThemeStyles = {
     color: "var(--text-muted)"
   },
   
-  // Fold Gutter & Ícones
   ".cm-foldGutter": {
     minWidth: "14px",
     width: "32px",
@@ -104,7 +99,6 @@ const baseThemeStyles = {
     pointerEvents: "none"
   },
 
-  // Outros elementos textuais
   ".cm-strong": { fontWeight: "700" },
   ".cm-em": { fontStyle: "italic" },
   ".cm-heading": { fontWeight: "700", fontSize: "1.1em" },
@@ -117,7 +111,6 @@ const baseThemeStyles = {
   ".cm-link": { color: "var(--primary)", textDecoration: "underline" },
   ".cm-comment": { color: "var(--text-muted)", fontStyle: "italic" },
 
-  // --- Tooltip & Autocomplete ---
   ".cm-tooltip.cm-tooltip-autocomplete": {
     border: "1px solid var(--border)",
     backgroundColor: "var(--bg-surface)",
@@ -188,30 +181,82 @@ const baseThemeStyles = {
   ".cm-snippetField:hover": {
     borderColor: "var(--primary)",
     cursor: "text"
+  },
+".cm-panels": {
+    backgroundColor: "var(--bg-surface)",
+    color: "var(--text-main)",
+    borderTop: "1px solid var(--border)",
+    borderBottom: "none",
+    zIndex: "100"
+  },
+  
+  ".cm-vim-panel": {
+    padding: "6px 12px",
+    fontFamily: "'Inter', sans-serif",
+    fontSize: "14px",
+    lineHeight: "1.4",
+    display: "flex",
+    alignItems: "center",
+    gap: "8px"
+  },
+
+  ".cm-vim-panel > div": {
+    display: "flex", 
+    flex: "1", 
+    alignItems: "center"
+  },
+
+  ".cm-vim-panel span[style*='font-family: monospace']": {
+    color: "var(--primary)",
+    fontWeight: "bold",
+    marginRight: "6px",
+    fontFamily: "'Crimson Pro', monospace !important"
+  },
+
+  ".cm-vim-panel input": {
+    color: "var(--text-main)",
+    caretColor: "var(--primary)",
+    fontFamily: "monospace",
+    fontWeight: "500",
+    backgroundColor: "transparent",
+    border: "none",
+    outline: "none",
+    height: "100%",
+    flex: "1"
+  },
+
+  ".cm-vim-panel span[style*='color: rgb(136, 136, 136)']": {
+    color: "var(--text-muted) !important",
+    fontSize: "0.9em",
+    fontStyle: "italic",
+    marginLeft: "auto",
+    paddingLeft: "10px"
+  },
+  
+  ".cm-vim-panel span[style*='cursor: pointer']": {
+    cursor: "pointer",
+    transition: "color 0.2s ease",
+    textDecoration: "underline",
+    textDecorationColor: "var(--border)"
+  },
+  ".cm-vim-panel span[style*='cursor: pointer']:hover": {
+    color: "var(--primary) !important"
   }
 };
 
-// --- 2. Themes Definitions ---
-// Como movemos quase tudo que usa variáveis para o `baseThemeStyles`, 
-// os temas específicos ficam bem mais limpos.
 
 export const medicalLightTheme = EditorView.theme({
   ...baseThemeStyles,
-  // Sobrescritas específicas do Light Mode (se houver algo que NÃO seja variável CSS)
 }, { dark: false });
 
 export const medicalDarkTheme = EditorView.theme({
   ...baseThemeStyles,
-  // Sobrescritas específicas do Dark Mode
-  // Exemplo: se o fundo do gutter precisar ser opaco no dark mode:
   ".cm-gutters": { 
     ...baseThemeStyles[".cm-gutters"], 
     backgroundColor: "var(--bg-surface)" 
   }
 }, { dark: true });
 
-// --- 3. Highlight Style ---
-// Unificado pois usa CSS Variables para as cores
 
 const sharedHighlightStyle = HighlightStyle.define([
   { tag: t.heading, color: "var(--primary)", fontWeight: "700", fontSize: "1.3em" },
