@@ -175,7 +175,7 @@ const baseThemeStyles = {
     opacity: "0.7"
   },
   ".cm-snippetField": {
-    backgroundColor: "var(--bg-gutter)",
+    backgroundColor: "transparent",
     color: "var(--primary)",
     border: "1px dashed var(--border)",
     borderRadius: "4px",
