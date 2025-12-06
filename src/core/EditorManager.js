@@ -230,6 +230,7 @@ export class EditorManager extends EventTarget {
     const range = this.view.state.selection.main;
     this.view.dispatch({
       changes: { from: range.from, to: range.to, insert: str },
+      selection: { anchor: range.from + str.length },
     });
     this.view.focus();
   }
