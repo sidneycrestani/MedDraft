@@ -93,9 +93,3 @@ Se você deseja contribuir com o código ou rodar uma instância própria:
 ## 📄 Licença
 
 Este projeto é distribuído sob a licença **MIT**. Sinta-se livre para usar, modificar e distribuir.
-
----
-
-<div align="center">
-  <small>Desenvolvido com por <b>Sidney Alves Crestani Jr.</b></small>
-</div>
