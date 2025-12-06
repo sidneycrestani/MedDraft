@@ -11,7 +11,6 @@ import {
   historyKeymap,
   undo,
   redo,
-  insertTab,
 } from "@codemirror/commands";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { snippet, autocompletion } from "@codemirror/autocomplete";
@@ -56,6 +55,10 @@ export class EditorManager extends EventTarget {
       console.warn("Erro ao acessar localStorage:", e);
     }
 
+    const insertTab = (view) => {
+      view.dispatch(view.state.replaceSelection("\t"));
+      return true;
+    };
     const baseExtensions = [
       this.keymapConfig.of(
         keymap.of([
