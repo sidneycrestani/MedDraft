@@ -2,31 +2,32 @@ import { EditorView } from "@codemirror/view";
 import { tags } from "@lezer/highlight";
 import { HighlightStyle } from "@codemirror/language";
 
-// --- 1. Estilos Base (Comuns a Dark e Light) ---
+// --- 1. Base Theme (Layout & Estrutura) ---
 const baseThemeStyles = {
-  // Configurações Gerais
   "&": {
     height: "100%",
     fontFamily: "'Crimson Pro', serif",
     fontSize: "20px",
     lineHeight: "1.6",
-    color: "var(--text-main)",
-    backgroundColor: "var(--bg-surface)"
+    backgroundColor: "var(--bg-surface)", // Movido para base (usa var)
+    color: "var(--text-main)"             // Movido para base (usa var)
+  },
+  
+  // Seleção e Foco
+  "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection": {
+      backgroundColor: "var(--selection-bg) !important"
   },
   ".cm-content": {
-    padding: "18px 8px",
+    padding: "18px 8px", // Corrigido de 08px para 8px
     fontFamily: "'Crimson Pro', serif",
-    caretColor: "var(--primary)"
+    caretColor: "var(--primary)" // Movido para base
   },
   
-  // Cursor e Seleção
-  "&.cm-focused .cm-cursor": { borderLeftColor: "var(--primary)" },
-  "&.cm-focused .cm-selectionBackground, .cm-selectionBackground ::selection": {
-      backgroundColor: "var(--selection-bg) !important" 
+  // Cursor
+  ".cm-cursor": { 
+    borderLeftWidth: "2px",
+    borderLeftColor: "var(--primary)" // Movido para base
   },
-  ".cm-cursor": { borderLeftWidth: "2px" },
-  
-  // Cursor "Gordo" (Vim mode ou overwrite)
   "&.cm-focused .cm-fat-cursor": {
     backgroundColor: "var(--primary)",
     outline: "none",
@@ -37,22 +38,21 @@ const baseThemeStyles = {
     backgroundColor: "transparent"
   },
 
-  // Linhas e Numeração
-  ".cm-line": { padding: "0 8px 0 0" },
-  ".cm-activeLineGutter": { backgroundColor: "var(--bg-gutter)" },
-  ".cm-linenumber": { 
-      minWidth: "0px", 
-      textAlign: "right", 
-      paddingRight: "8px",
-      color: "var(--text-muted)"
+  // Linhas e Gutters (Mesclados e limpos)
+  ".cm-line": { 
+    paddingLeft: "0", 
+    paddingRight: "8px" 
   },
-
-  // Gutters (Margens laterais)
-  ".cm-gutters": {
+  ".cm-activeLineGutter": { 
+    backgroundColor: "var(--bg-gutter)" // Movido para base
+  },
+  ".cm-gutters": { 
+    padding: "0 8px",
+    backgroundColor: "transparent", // Padrão transparente, sobrescreva se necessário
     border: "none",
     color: "var(--text-muted)",
-    backgroundColor: "transparent", // Controlado via CSS var se precisar mudar
-    padding: "0 8px"
+    minWidth: "14px",
+    alignItems: "center" // Centralização padrão
   },
   ".cm-gutterElement": {
     backgroundColor: "transparent",
@@ -62,21 +62,24 @@ const baseThemeStyles = {
     cursor: "pointer",
     minWidth: "14px"
   },
+  ".cm-linenumber": { 
+    minWidth: "0px", 
+    textAlign: "right", 
+    paddingRight: "8px",
+    color: "var(--text-muted)"
+  },
   
-  // Folding (Dobrar código)
+  // Fold Gutter & Ícones
   ".cm-foldGutter": {
+    minWidth: "14px",
     width: "32px",
     display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
   },
   ".cm-foldPlaceholder": {
     backgroundColor: "transparent",
     border: "none",
     color: "var(--primary)"
   },
-
-  // Ícones de Folding (Customizados)
   ".gutter-fold-icon": {
     display: "flex",
     alignItems: "center",
@@ -101,20 +104,20 @@ const baseThemeStyles = {
     pointerEvents: "none"
   },
 
-  // Placeholders e Elementos de Texto
+  // Outros elementos textuais
+  ".cm-strong": { fontWeight: "700" },
+  ".cm-em": { fontStyle: "italic" },
+  ".cm-heading": { fontWeight: "700", fontSize: "1.1em" },
   ".cm-placeholder": {
     color: "var(--text-muted)",
     fontStyle: "italic",
     opacity: "0.6"
   },
-  ".cm-strong": { fontWeight: "700" },
-  ".cm-em": { fontStyle: "italic" },
-  ".cm-heading": { fontWeight: "700", fontSize: "1.1em" },
-  ".cm-link": { color: "var(--primary)", textDecoration: "underline" },
   ".cm-matchingBracket": { backgroundColor: "var(--match-bg)", border: "none" },
+  ".cm-link": { color: "var(--primary)", textDecoration: "underline" },
   ".cm-comment": { color: "var(--text-muted)", fontStyle: "italic" },
 
-  // --- Autocomplete / Tooltip Styles ---
+  // --- Tooltip & Autocomplete ---
   ".cm-tooltip.cm-tooltip-autocomplete": {
     border: "1px solid var(--border)",
     backgroundColor: "var(--bg-surface)",
@@ -140,8 +143,6 @@ const baseThemeStyles = {
     backgroundColor: "var(--btn-active-bg)",
     color: "var(--text-main)"
   },
-  
-  // Ícone Médico (SVG Mask)
   ".cm-completionIcon": {
     width: "16px",
     height: "16px",
@@ -155,8 +156,14 @@ const baseThemeStyles = {
     opacity: "0.8",
     marginRight: "0"
   },
-  ".cm-completionLabel": { fontWeight: "600", color: "var(--primary)" },
-  ".cm-completionMatchedText": { textDecoration: "underline", textDecorationColor: "var(--primary)" },
+  ".cm-completionLabel": {
+    fontWeight: "600",
+    color: "var(--primary)"
+  },
+  ".cm-completionMatchedText": {
+    textDecoration: "underline",
+    textDecorationColor: "var(--primary)"
+  },
   ".cm-completionDetail": {
     marginLeft: "auto",
     fontSize: "0.85em",
@@ -167,10 +174,8 @@ const baseThemeStyles = {
     color: "var(--text-main)",
     opacity: "0.7"
   },
-
-  // Snippets
   ".cm-snippetField": {
-    backgroundColor: "transparent",
+    backgroundColor: "var(--bg-gutter)",
     color: "var(--primary)",
     border: "1px dashed var(--border)",
     borderRadius: "4px",
@@ -186,17 +191,29 @@ const baseThemeStyles = {
   }
 };
 
-// --- 2. Definição dos Temas (Light / Dark) ---
-// Como a lógica pesada está no 'baseThemeStyles' usando variáveis,
-// os temas aqui servem apenas para definir a flag 'dark: boolean'.
+// --- 2. Themes Definitions ---
+// Como movemos quase tudo que usa variáveis para o `baseThemeStyles`, 
+// os temas específicos ficam bem mais limpos.
 
-export const medicalLightTheme = EditorView.theme(baseThemeStyles, { dark: false });
-export const medicalDarkTheme = EditorView.theme(baseThemeStyles, { dark: true });
+export const medicalLightTheme = EditorView.theme({
+  ...baseThemeStyles,
+  // Sobrescritas específicas do Light Mode (se houver algo que NÃO seja variável CSS)
+}, { dark: false });
 
-// --- 3. Highlight Styles (Unificado) ---
-// Usamos o mesmo objeto para ambos, pois as cores são CSS Variables.
+export const medicalDarkTheme = EditorView.theme({
+  ...baseThemeStyles,
+  // Sobrescritas específicas do Dark Mode
+  // Exemplo: se o fundo do gutter precisar ser opaco no dark mode:
+  ".cm-gutters": { 
+    ...baseThemeStyles[".cm-gutters"], 
+    backgroundColor: "var(--bg-surface)" 
+  }
+}, { dark: true });
 
-const medicalHighlightStyle = HighlightStyle.define([
+// --- 3. Highlight Style ---
+// Unificado pois usa CSS Variables para as cores
+
+const sharedHighlightStyle = HighlightStyle.define([
   { tag: tags.heading, color: "var(--primary)", fontWeight: "700", fontSize: "1.05em" },
   { tag: tags.strong, color: "var(--text-main)", fontWeight: "700" },
   { tag: tags.emphasis, color: "var(--text-main)", fontStyle: "italic" },
@@ -207,6 +224,6 @@ const medicalHighlightStyle = HighlightStyle.define([
 ]);
 
 export const HighlightStyles = {
-  light: medicalHighlightStyle,
-  dark: medicalHighlightStyle // Reutiliza o mesmo
+  light: sharedHighlightStyle,
+  dark: sharedHighlightStyle
 };
