@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
-  <title>Editor Clínico Pro</title>
+  <title>MedDraft</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/editor-clinico/assets/index-DbQwvJs1.js"></script>
-  <link rel="stylesheet" crossorigin href="/editor-clinico/assets/index-rsYYkd6Z.css">
+  <script type="module" crossorigin src="/MedDraft/assets/index-DbQwvJs1.js"></script>
+  <link rel="stylesheet" crossorigin href="/MedDraft/assets/index-rsYYkd6Z.css">
 </head>
 <body>
   <!-- Menu Dropdown (Antigo Modal Sobre) -->
@@ -26,7 +26,7 @@
     </label>
 
     <div class="menu-footer">
-      <strong>Editor Clínico Lite v1.2</strong><br>
+      <strong>MedDraft</strong><br>
       Offline & Seguro • <a href="https://codemirror.net/" target="_blank" class="color-inherit">CodeMirror 6</a><br>
       © 2025 Sidney Alves Crestani Jr.
     </div>
@@ -36,35 +36,35 @@
   <div id="toolbar">
     <!-- 1. Branding com Dropdown -->
     <div id="brand-trigger" class="brand" title="Menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="/editor-clinico/icons.svg#brand" /></svg>
-      <span>Editor Clínico</span>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/editor-clinico/icons.svg#chevron" /></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="/MedDraft/icons.svg#brand" /></svg>
+      <span>MedDraft</span>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/MedDraft/icons.svg#chevron" /></svg>
     </div>
 
     <!-- 2. Arquivo -->
     <div class="group">
       <button id="btn-new" class="icon-only" title="Novo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/editor-clinico/icons.svg#file-new" /></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/MedDraft/icons.svg#file-new" /></svg>
       </button>
       <input type="file" id="fileInput" hidden accept=".txt,.md">
       <button id="btn-open" title="Abrir" class="icon-only">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/editor-clinico/icons.svg#folder-open" /></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/MedDraft/icons.svg#folder-open" /></svg>
       </button>
       <button id="btn-save" title="Baixar" class="icon-only">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/editor-clinico/icons.svg#download" /></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/MedDraft/icons.svg#download" /></svg>
       </button>
     </div>
 
     <!-- 3. Undo/Redo & Ferramentas -->
     <div class="group">
       <button id="btn-undo" class="icon-only" title="Desfazer">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/editor-clinico/icons.svg#undo" /></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/MedDraft/icons.svg#undo" /></svg>
       </button>
       <button id="btn-redo" class="icon-only" title="Refazer">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/editor-clinico/icons.svg#redo" /></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/MedDraft/icons.svg#redo" /></svg>
       </button>
       <button id="btn-date" title="Inserir Data" class="icon-only">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/editor-clinico/icons.svg#clock" /></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/MedDraft/icons.svg#clock" /></svg>
       </button>
       <button id="btn-case" title="Maiúsculas/Minúsculas">
         <span class="label-aa">Aa</span>
@@ -76,12 +76,12 @@
 
     <!-- 4. Ícone Modelos -->
     <button id="btn-sidebar-toggle" class="icon-only" title="Modelos (Snippets)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="/editor-clinico/icons.svg#sidebar" /></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="/MedDraft/icons.svg#sidebar" /></svg>
     </button>
 
     <!-- 5. Botão Copiar -->
     <button id="btn-copy" class="cta" title="Copiar Texto">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/editor-clinico/icons.svg#copy" /></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/MedDraft/icons.svg#copy" /></svg>
       <span class="label">COPIAR</span>
     </button>
   </div>
@@ -99,7 +99,7 @@
         <span id="sidebar-title">Modelos</span>
         <div class="actions-row">
            <button id="btn-json" class="icon-only" title="JSON Import/Export">
-             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/editor-clinico/icons.svg#arrows" /></svg>
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><use href="/MedDraft/icons.svg#arrows" /></svg>
            </button>
            <button id="btn-sidebar-close" class="icon-only" title="Fechar">✕</button>
         </div>
