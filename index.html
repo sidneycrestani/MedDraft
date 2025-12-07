@@ -359,6 +359,22 @@
 
     <div id="toast"><span id="toast-msg">Notificação</span></div>
 
+    <div id="modal-overlay" class="modal-overlay">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3>Iniciar Novo Rascunho?</h3>
+        </div>
+        <div class="modal-body">
+          <p>O texto atual será removido da tela. Você deseja salvar antes de limpar?</p>
+        </div>
+        <div class="modal-footer">
+          <button id="modal-btn-cancel">Cancelar</button>
+          <button id="modal-btn-clear" class="btn-danger">Limpar sem Salvar</button>
+          <button id="modal-btn-save-clear" class="cta">Salvar e Limpar</button>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
