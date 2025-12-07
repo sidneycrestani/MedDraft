@@ -11,19 +11,15 @@
   display: flex;
   justify-content: center;
   background: var(--bg-app);
-  padding: 15px 40px;
+  padding: 15px 0px;
   position: relative;
   overflow: hidden;
   min-width: 0;
 }
-@media (max-width: 768px) {
-  #editor-wrapper {
-    padding: 16px;
-  }
-}
+
 #editor {
   width: 100%;
-  max-width: 960px;
+  max-width: 740px;
   height: 100%;
   background: var(--bg-surface);
   border: 1px solid var(--border);
@@ -31,15 +27,7 @@
   box-shadow: var(--shadow-md);
   overflow: hidden;
 }
-@media (max-width: 768px) {
-  #editor {
-    max-width: 100%;
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid var(--border);
-    box-shadow: none;
-  }
-}
+
 #sidebar {
   width: 0;
   background: var(--bg-surface);
@@ -158,4 +146,28 @@
 
 .blink {
   animation: pulse-opacity 1.2s infinite ease-in-out;
+}
+
+@media (max-width: 768px) {
+  #editor-wrapper {
+    padding: 1px;
+  }
+    #editor {
+    max-width: 100%;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    box-shadow: none;
+  }
+}
+@media (max-width: 660px) {
+  .brand-text {
+    display: none;
+  }
+}
+@media (max-width: 560px) {
+  #btn-date,
+  #btn-case {
+    display: none;
+  }
 }

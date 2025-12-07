@@ -15,7 +15,7 @@ const baseThemeStyles = {
       backgroundColor: "var(--selection-bg) !important",
     },
   ".cm-content": {
-    padding: "14px 8px",
+    padding: "20px 0px 14px 0px",
     fontFamily: "var(--font-editor)",
     caretColor: "var(--primary)",
   },
@@ -37,14 +37,14 @@ const baseThemeStyles = {
   },
 
   ".cm-line": {
-    paddingLeft: "0",
-    paddingRight: "8px",
+    paddingLeft: "0px",
+    paddingRight: "60px",
   },
   ".cm-activeLineGutter": {
     backgroundColor: "transparent",
   },
   ".cm-gutters": {
-    padding: "0 8px",
+    padding: "0 0px",
     backgroundColor: "transparent",
     border: "none",
     color: "var(--text-muted)",
@@ -53,6 +53,8 @@ const baseThemeStyles = {
   },
   ".cm-gutterElement": {
     backgroundColor: "transparent",
+    paddingLeft: "30px",
+    paddingRight: "10px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -68,7 +70,6 @@ const baseThemeStyles = {
 
   ".cm-foldGutter": {
     minWidth: "14px",
-    width: "32px",
     display: "flex",
   },
   ".cm-foldPlaceholder": {
