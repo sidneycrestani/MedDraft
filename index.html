@@ -90,8 +90,8 @@
         "description": "Ferramenta de produtividade médica focada em privacidade local e velocidade de digitação."
       }
     </script>
-    <script type="module" crossorigin src="/MedDraft/assets/index-HU1FOqCK.js"></script>
-    <link rel="stylesheet" crossorigin href="/MedDraft/assets/index-DVwTHOc4.css">
+    <script type="module" crossorigin src="/MedDraft/assets/index-Csf_zy5P.js"></script>
+    <link rel="stylesheet" crossorigin href="/MedDraft/assets/index-FBZ9dk2l.css">
   <link rel="manifest" href="/MedDraft/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/MedDraft/registerSW.js"></script></head>
   <body>
     <div id="app-menu" class="dropdown-menu">
@@ -357,6 +357,22 @@
     </div>
 
     <div id="toast"><span id="toast-msg">Notificação</span></div>
-
+
+    <div id="modal-overlay" class="modal-overlay">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3>Iniciar Novo Rascunho?</h3>
+        </div>
+        <div class="modal-body">
+          <p>O texto atual será removido da tela. Você deseja salvar antes de limpar?</p>
+        </div>
+        <div class="modal-footer">
+          <button id="modal-btn-cancel">Cancelar</button>
+          <button id="modal-btn-clear" class="btn-danger">Limpar sem Salvar</button>
+          <button id="modal-btn-save-clear" class="cta">Salvar e Limpar</button>
+        </div>
+      </div>
+    </div>
+
   </body>
 </html>
