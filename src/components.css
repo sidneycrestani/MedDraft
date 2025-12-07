@@ -38,6 +38,12 @@
   width: 18px;
   height: 18px;
 }
+@media (max-width: 582px) {
+  .brand svg {
+    width: 27px;
+    height: 27px;
+  }
+}
 .brand .chevron {
   width: 14px;
   height: 14px;
@@ -178,13 +184,9 @@ button svg {
   stroke-width: 2px;
 }
 .label {
-  display: none;
+  display: inline-block;
 }
-@media (min-width: 768px) {
-  .label {
-    display: inline-block;
-  }
-}
+
 .view-container {
   flex: 1;
   display: none;
@@ -445,4 +447,21 @@ button svg {
 }
 body.dark-mode .btn-danger:hover {
   background: rgba(239, 68, 68, 0.1);
+}
+@media (max-width: 768px) {
+  .label {
+    display: none;
+  }
+  #toolbar {
+    gap: 0px;
+    padding: 0 12px;
+  }
+  .brand {
+    margin-right: 0px;
+    padding-right: 3px;
+    gap: 4px;
+  }
+  .spacer {
+    width: 0px;
+  }
 }

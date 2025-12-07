@@ -152,7 +152,7 @@
   #editor-wrapper {
     padding: 1px;
   }
-    #editor {
+  #editor {
     max-width: 100%;
     border-radius: 0;
     border: none;
@@ -160,12 +160,12 @@
     box-shadow: none;
   }
 }
-@media (max-width: 660px) {
+@media (max-width: 582px) {
   .brand-text {
     display: none;
   }
 }
-@media (max-width: 560px) {
+@media (max-width: 486px) {
   #btn-date,
   #btn-case {
     display: none;
