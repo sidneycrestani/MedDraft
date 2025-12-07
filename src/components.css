@@ -74,7 +74,7 @@
 }
 .menu-header {
   padding: 8px 16px;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--text-muted);
@@ -134,7 +134,7 @@ button {
   padding: 6px 10px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   font-family: inherit;
   display: flex;
@@ -216,13 +216,13 @@ button svg {
 }
 .snippet-info b {
   display: block;
-  font-size: 13px;
+  font-size: 14px;
   margin-bottom: 2px;
 }
 .snippet-info span {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   background: var(--bg-gutter);
   padding: 2px 4px;
   border-radius: 3px;
@@ -244,7 +244,7 @@ button svg {
 }
 .input-group label {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   margin-bottom: 4px;
   color: var(--text-muted);
@@ -266,7 +266,7 @@ button svg {
   border-radius: 4px;
   background: var(--bg-app);
   color: var(--text-main);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 12px;
   line-height: 1.4;
   resize: none;
@@ -282,7 +282,7 @@ button svg {
 }
 .label-aa {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
 }
 .spacer {
   flex: 1;
@@ -353,7 +353,7 @@ button svg {
   color: #fff;
   padding: 8px 16px;
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   opacity: 0;
   visibility: hidden;

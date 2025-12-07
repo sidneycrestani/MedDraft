@@ -5,9 +5,7 @@ import { tags as t } from "@lezer/highlight";
 const baseThemeStyles = {
   "&": {
     height: "100%",
-    fontFamily: "'Crimson Pro', serif",
-    fontSize: "20px",
-    lineHeight: "1.6",
+    fontSize: "17px",
     backgroundColor: "var(--bg-surface)",
     color: "var(--text-main)",
   },
@@ -18,10 +16,12 @@ const baseThemeStyles = {
     },
   ".cm-content": {
     padding: "18px 8px",
-    fontFamily: "'Crimson Pro', serif",
+    fontFamily: "var(--font-editor)",
     caretColor: "var(--primary)",
   },
-
+  ".cm-scroller": {
+    lineHeight: "1.7",
+  },
   ".cm-cursor": {
     borderLeftWidth: "2px",
     borderLeftColor: "var(--primary)",
@@ -102,7 +102,6 @@ const baseThemeStyles = {
 
   ".cm-strong": { fontWeight: "700" },
   ".cm-em": { fontStyle: "italic" },
-  ".cm-heading": { fontWeight: "700", fontSize: "1.1em" },
   ".cm-placeholder": {
     color: "var(--text-muted)",
     fontStyle: "italic",
@@ -122,7 +121,7 @@ const baseThemeStyles = {
     minWidth: "250px",
   },
   ".cm-tooltip.cm-tooltip-autocomplete > ul": {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-ui), sans-serif",
     fontSize: "13px",
     maxHeight: "250px",
   },
@@ -196,7 +195,7 @@ const baseThemeStyles = {
 
   ".cm-vim-panel": {
     padding: "6px 12px",
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-ui), sans-serif",
     fontSize: "14px",
     lineHeight: "1.4",
     display: "flex",
@@ -212,15 +211,17 @@ const baseThemeStyles = {
 
   ".cm-vim-panel span[style*='font-family: monospace']": {
     color: "var(--primary)",
+    fontSize: "14px",
     fontWeight: "bold",
     marginRight: "6px",
-    fontFamily: "'Crimson Pro', monospace !important",
+    fontFamily: " var(--font-mono) !important",
   },
 
   ".cm-vim-panel input": {
     color: "var(--text-main)",
     caretColor: "var(--primary)",
-    fontFamily: "monospace",
+    fontFamily: " var(--font-mono)",
+    fontSize: "14px",
     fontWeight: "500",
     backgroundColor: "transparent",
     border: "none",

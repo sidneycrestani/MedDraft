@@ -5,7 +5,6 @@
   position: relative;
   height: auto;
   min-height: 0;
-
 }
 #editor-wrapper {
   flex: 1;
@@ -31,7 +30,6 @@
   border-radius: 8px;
   box-shadow: var(--shadow-md);
   overflow: hidden;
-  font-family: "Crimson Pro", serif !important;
 }
 @media (max-width: 768px) {
   #editor {
@@ -80,7 +78,7 @@
   border-bottom: 1px solid var(--border);
   background: var(--bg-gutter);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
 }
 .sidebar-content {
   flex: 1;
@@ -98,20 +96,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 0px 16px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   flex-shrink: 0;
   z-index: 40;
 }
 
-/* Branding Styles */
 .brand {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* Animação sutil do cursor piscando (opcional, mas fica incrível) */
 @keyframes soft-blink {
   0%,
   100% {
@@ -123,32 +119,31 @@
 }
 
 .cursor-blink {
-  animation: soft-blink 1.5s infinite; /* Pisca como um cursor real */
+  animation: soft-blink 1.5s infinite;
 }
 
-/* Tipografia do Logo */
 .brand-text {
   display: flex;
-  flex-direction: row; /* Ou row, dependendo do espaço */
+  flex-direction: row;
   line-height: 1;
 }
 
 .brand-text .med {
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   letter-spacing: -0.5px;
-  color: var(--text-primary);
 }
 
 .brand-text .draft {
-  font-family: "JetBrains Mono", monospace; /* Fonte de código para "Draft" */
+  font-family: var(--font-mono);
   font-weight: 400;
-  font-size: 0.85rem;
-  color: #0ea5e9; /* Cor de destaque (Azul Sky) */
+  font-size: 0.9rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  color: #0ea5e9;
 }
+
 @keyframes pulse-opacity {
   0% {
     opacity: 1;
